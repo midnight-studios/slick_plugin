@@ -4,6 +4,7 @@ slick
 -------
 
 [1]: <https://github.com/kenwheeler/slick>
+[2]: <http://b2evolution.net>
 
 _the last carousel you'll ever need_
 
