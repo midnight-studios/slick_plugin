@@ -24,7 +24,9 @@ jQuery 1.7
 #### License
 
 Copyright (c) Ken Wheeler
+
 Adapted for b2evolution by Jacques Joubert
+
 Licensed under the MIT license.
 
 Free as in Bacon.
