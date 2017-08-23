@@ -47,7 +47,7 @@ class slick_plugin extends Plugin
 	 * Code, if this is a renderer or pingback plugin.
 	 */
 	var $code = 'slick_plg';
-	var $version = '0.0.160';
+	var $version = '0.0.171';
 	var $author = 'Jacques Joubert';
 	var $help_url = 'https://github.com/midnight-studios';
 	var $group = 'Midnight Studios';
@@ -1577,18 +1577,8 @@ class slick_plugin extends Plugin
 		$custom_js .= '$(document).ready(function(){'."\n";
 		$custom_js .= '"use strict";'."\n";
 		
-		
-		if( $value = $params[ 'shuffle' ] )
-		{
-		
-			// shuffle the slides and then call slick
-			$custom_js .= 'console.log("shuffle");';
-			$custom_js .= '$("#slick_'.$this->classname.'_'.$wi_ID.' div").shuffle();'."\n";
-		
-		}
-		
 		$custom_js .= '$("#slick_'.$this->classname.'_'.$wi_ID.'").slick({'."\n";
-		
+		$custom_js .= ( $params['shuffle'] == 0 ) ? 'shuffle: false,'."\n":'shuffle: true,'."\n";
 		$custom_js .= ( $params['md_dots'] == 0 ) ? 'dots: false,'."\n":'dots: true,'."\n";
 		$custom_js .= ( $params['md_infinite'] == 0 ) ? 'infinite: false,'."\n":'infinite: true,'."\n";
 		$custom_js .= ( $params['md_variableWidth'] == 0 ) ? 'variableWidth: false,'."\n":'variableWidth: true,'."\n";
