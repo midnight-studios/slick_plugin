@@ -180,6 +180,13 @@ class slick_plugin extends Plugin
 					),
 			
 		
+			
+								'shuffle' => array(
+									'label' => T_('Shuffle Slides'),
+									'defaultvalue' => 1,
+									'type' => 'checkbox',
+									'note' =>  T_('If enabled the slider will shuffle slides.'),
+								),
 	array( 'layout' => 'html', 'value' => '<!-- ==== group start ==== --> <div id="'.$this->classname.'_xs'.'" class="row"><div class="col-md-9 pull-right"><div class="panel-group"><div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title">'. 
 
 	/*
@@ -227,7 +234,7 @@ class slick_plugin extends Plugin
 								'xs_fade' => array(
 									'label' => T_('Fade'),
 									'note' =>  $this->T_( 'Fade on transition change. This is for displaying one slide at a time' ),
-									'defaultvalue' => 1,
+									'defaultvalue' => 0,
 									'type' => 'checkbox',
 								),
 								'xs_centerMode' => array(
@@ -345,7 +352,7 @@ class slick_plugin extends Plugin
 								'sm_fade' => array(
 									'label' => T_('Fade'),
 									'note' =>  $this->T_( 'Fade on transition change. This is for displaying one slide at a time' ),
-									'defaultvalue' => 1,
+									'defaultvalue' => 0,
 									'type' => 'checkbox',
 								),
 								'sm_centerMode' => array(
@@ -465,7 +472,7 @@ class slick_plugin extends Plugin
 								'md_fade' => array(
 									'label' => T_('Fade'),
 									'note' =>  $this->T_( 'Fade on transition change. This is for displaying one slide at a time' ),
-									'defaultvalue' => 1,
+									'defaultvalue' => 0,
 									'type' => 'checkbox',
 								),
 								'md_centerMode' => array(
@@ -580,7 +587,7 @@ class slick_plugin extends Plugin
 								'lg_fade' => array(
 									'label' => T_('Fade'),
 									'note' =>  $this->T_( 'Fade on transition change. This is for displaying one slide at a time' ),
-									'defaultvalue' => 1,
+									'defaultvalue' => 0,
 									'type' => 'checkbox',
 								),
 								'lg_centerMode' => array(
@@ -1569,7 +1576,19 @@ class slick_plugin extends Plugin
 		$custom_js .= '<script type="text/javascript">'."\n\n";
 		$custom_js .= '$(document).ready(function(){'."\n";
 		$custom_js .= '"use strict";'."\n";
+		
+		
+		if( $value = $params[ 'shuffle' ] )
+		{
+		
+			// shuffle the slides and then call slick
+			$custom_js .= 'console.log("shuffle");';
+			$custom_js .= '$("#slick_'.$this->classname.'_'.$wi_ID.' div").shuffle();'."\n";
+		
+		}
+		
 		$custom_js .= '$("#slick_'.$this->classname.'_'.$wi_ID.'").slick({'."\n";
+		
 		$custom_js .= ( $params['md_dots'] == 0 ) ? 'dots: false,'."\n":'dots: true,'."\n";
 		$custom_js .= ( $params['md_infinite'] == 0 ) ? 'infinite: false,'."\n":'infinite: true,'."\n";
 		$custom_js .= ( $params['md_variableWidth'] == 0 ) ? 'variableWidth: false,'."\n":'variableWidth: true,'."\n";
@@ -1675,6 +1694,8 @@ class slick_plugin extends Plugin
 		$custom_js .= '});'."\n";
 		$custom_js .= '});'."\n";
 		$custom_js .= '</script>'."\n\n";
+		
+		
 		$plugin_params = array(
 				// This is what will enclose the block in the skin:
 				'block_start'       					=> 		"\n".'<section id="slick_'.$this->classname.'_'.$wi_ID.'" class="slider">'."\n",

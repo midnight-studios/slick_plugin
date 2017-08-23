@@ -2872,6 +2872,28 @@
 
     };
 
+	
+    $.fn.shuffle = function() {
+ 
+        var allElems = this.get(),
+            getRandom = function(max) {
+                return Math.floor(Math.random() * max);
+            },
+            shuffled = $.map(allElems, function(){
+                var random = getRandom(allElems.length),
+                    randEl = $(allElems[random]).clone(true)[0];
+                allElems.splice(random, 1);
+                return randEl;
+           });
+ 
+        this.each(function(i){
+            $(this).replaceWith($(shuffled[i]));
+        });
+ 
+        return $(shuffled);
+ 
+    };
+	
     $.fn.slick = function() {
         var _ = this,
             opt = arguments[0],
@@ -2880,7 +2902,7 @@
             i,
             ret;
         for (i = 0; i < l; i++) {
-            if (typeof opt == 'object' || typeof opt == 'undefined')
+            if (typeof opt === 'object' || typeof opt === 'undefined')
                 _[i].slick = new Slick(_[i], opt);
             else
                 ret = _[i].slick[opt].apply(_[i].slick, args);
