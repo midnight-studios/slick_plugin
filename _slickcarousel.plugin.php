@@ -32,7 +32,7 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
  *
  * @package plugins
  */
-class slick_plugin extends Plugin
+class slickcarousel_plugin extends Plugin
 {
 	/**
 	 * Variables below MUST be overriden by plugin implementations,
