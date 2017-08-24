@@ -39,6 +39,7 @@
 
             _.defaults = {
 				shuffle:false,
+				shuffleFirst:true,
                 accessibility: true,
                 adaptiveHeight: false,
                 appendArrows: $(element),
@@ -2986,13 +2987,29 @@
 
     };
 
+	/*
+	
+	shuffle slides on load before initializing slick slider
+	
+	options:
+	
+	shuffle: true | false
+	shuffleFirst: true | false
+	
+	*/
 	Slick.prototype.shuffleSlides = function() {
  
 		var _ = this;
 		
 		if (_.options.shuffle === true) {
         
-			var slideItems = _.$slider.find('div');
+			if (_.options.shuffleFirst !== true) {
+				var slideItems = _.$slider.find('div').not(':first-child');
+			} 
+			else 
+			{
+				var slideItems = _.$slider.find('div');
+			}
 			
 			var slideGroup = slideItems.get(),
 				getRandom = function(max) {

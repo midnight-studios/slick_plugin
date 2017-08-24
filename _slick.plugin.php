@@ -170,8 +170,6 @@ class slick_plugin extends Plugin
 					'defaultvalue' => 'crop-300x100',
 				),
 			
-			
-			
 				'theme_color' => array(
 						'label' => T_('Theme Color'),
 						'note' =>  T_('Used for arrows ect. E-g: #444444 for light-black'),
@@ -179,14 +177,21 @@ class slick_plugin extends Plugin
 						'type' => 'color',
 					),
 			
-		
+				'shuffle' => array(
+					'label' => T_('Shuffle Slides'),
+					'defaultvalue' => 1,
+					'type' => 'checkbox',
+					'note' =>  T_('If enabled the slider will shuffle slides.'),
+				),
 			
-								'shuffle' => array(
-									'label' => T_('Shuffle Slides'),
-									'defaultvalue' => 1,
-									'type' => 'checkbox',
-									'note' =>  T_('If enabled the slider will shuffle slides.'),
-								),
+				'shuffleFirst' => array(
+					'label' => T_('Shuffle First Slide'),
+					'defaultvalue' => 1,
+					'type' => 'checkbox',
+					'note' =>  T_('If disabled the slider will always position the first slide first.'),
+				),
+			
+			
 	array( 'layout' => 'html', 'value' => '<!-- ==== group start ==== --> <div id="'.$this->classname.'_xs'.'" class="row"><div class="col-md-9 pull-right"><div class="panel-group"><div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title">'. 
 
 	/*
@@ -1579,6 +1584,7 @@ class slick_plugin extends Plugin
 		
 		$custom_js .= '$("#slick_'.$this->classname.'_'.$wi_ID.'").slick({'."\n";
 		$custom_js .= ( $params['shuffle'] == 0 ) ? 'shuffle: false,'."\n":'shuffle: true,'."\n";
+		$custom_js .= ( $params['shuffleFirst'] == 0 ) ? 'shuffleFirst: false,'."\n":'shuffleFirst: true,'."\n";
 		$custom_js .= ( $params['md_dots'] == 0 ) ? 'dots: false,'."\n":'dots: true,'."\n";
 		$custom_js .= ( $params['md_infinite'] == 0 ) ? 'infinite: false,'."\n":'infinite: true,'."\n";
 		$custom_js .= ( $params['md_variableWidth'] == 0 ) ? 'variableWidth: false,'."\n":'variableWidth: true,'."\n";
