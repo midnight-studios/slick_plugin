@@ -105,7 +105,7 @@ class slickcarousel_plugin extends Plugin
 		return array(
 			
 				'requires' => array(
-					'app_min' => '6.9.3-beta',
+					'app_min' => '6.9.3',
 				),
 			);
 	}
@@ -167,7 +167,7 @@ class slickcarousel_plugin extends Plugin
 					'note' => T_('Cropping and sizing of thumbnails'),
 					'type' => 'select',
 					'options' => get_available_thumb_sizes(),
-					'defaultvalue' => 'crop-300x100',
+					'defaultvalue' => 'crop-300x200',
 				),
 			
 				'theme_color' => array(
@@ -176,6 +176,17 @@ class slickcarousel_plugin extends Plugin
 						'defaultvalue' => '#444444',
 						'type' => 'color',
 					),
+			
+				'lazyload' => array(
+					'label' => T_('Lazyload Slides'),
+												'defaultvalue' => '_blank',
+												'type' => 'select',
+												'options' => array(
+																false => T_('Disabled'),
+																'ondemand' => T_('On demand'),
+																'progressive' => T_('Progressive'),),
+					'note' =>  T_('\'Disabled\' disables lazyload, \'Ondemand\' will load the image as soon as you slide to it, \'Progressive\' loads one image after the other when the page loads.'),
+				),
 			
 				'shuffle' => array(
 					'label' => T_('Shuffle Slides'),
@@ -190,6 +201,51 @@ class slickcarousel_plugin extends Plugin
 					'type' => 'checkbox',
 					'note' =>  T_('If disabled the slider will always position the first slide first.'),
 				),
+			
+							'global_info' => array(
+												'label' => $this->T_(''),
+												'type' => 'info',
+												'info' => 'These values will be used if not specified indepently.',
+												'size' => 50,
+											),
+			
+											'global_href_src' => array(
+												'label' => T_('href'),
+												'defaultvalue' => $baseurl,
+												'type' => 'text',
+												'size' => 50,
+											),
+											'global_href_title' => array(
+												'label' => T_('Title'),
+												'defaultvalue' => '',
+												'type' => 'text',
+												'size' => 50,
+											),
+											'global_href_data' => array(
+												'label' => T_('Data tag'),
+												'note' => T_('Data Example: data-toggle="modal" '),
+												'defaultvalue' => '',
+												'type' => 'text',
+												'size' => 50,
+											),
+											'global_href_class' => array(
+												'label' => T_('Class'),
+												'defaultvalue' => '',
+												'type' => 'text',
+												'size' => 50,
+											),
+											'global_href_target' => array(
+												'label' => T_('Target'),
+												'defaultvalue' => 'none',
+												'type' => 'select',
+												'options' => array(
+																'none' => T_('none'),
+																'_blank' => T_('New'),
+																'_self' => T_('Self'),
+																'_parent' => T_('Parent'),
+																'_top' => T_('Top')),
+											),
+											
 			
 			
 	array( 'layout' => 'html', 'value' => '<!-- ==== group start ==== --> <div id="'.$this->classname.'_xs'.'" class="row"><div class="col-md-9 pull-right"><div class="panel-group"><div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title">'. 
@@ -965,7 +1021,7 @@ class slickcarousel_plugin extends Plugin
 				'heading' => array(
 					'label' => T_('Heading'),
 					'note' => $this->T_( 'Give your entry a heading.' ),
-					'defaultvalue' => 'Heading',
+					'defaultvalue' => '',
 					'type' => 'html_textarea',
 					'rows' => 1,
 				),
@@ -973,7 +1029,7 @@ class slickcarousel_plugin extends Plugin
 				'subheading' => array(
 					'label' => T_('Sub Heading'),
 					'note' => $this->T_( 'Give your entry a sub heading.' ),
-					'defaultvalue' => 'Sub Heading',
+					'defaultvalue' => '',
 					'type' => 'html_textarea',
 					'rows' => 1,
 				),
@@ -982,7 +1038,7 @@ class slickcarousel_plugin extends Plugin
 				'body' => array(
 					'label' => T_('No Image'),
 					'note' => $this->T_( 'No Image content.' ),
-					'defaultvalue' => 'No Image',
+					'defaultvalue' => '',
 					'type' => 'html_textarea',
 					'rows' => 3,
 				),
@@ -1022,33 +1078,49 @@ class slickcarousel_plugin extends Plugin
 											
 			*/								
 			
+					'ignore_globals' => array(
+						'label' => T_('Ignore Globals'),
+						'defaultvalue' => 0,
+						'type' => 'checkbox',
+						'note' => T_('Check this if you want blank values that are not overridden by globals'),
+					),
 			
 											'href_src' => array(
 												'label' => T_('href'),
-												'defaultvalue' => $baseurl,
+												'defaultvalue' => '',
 												'type' => 'text',
 												'size' => 50,
 											),
 											'href_title' => array(
 												'label' => T_('Title'),
-												'defaultvalue' => 'Logo',
+												'defaultvalue' => '',
+												'type' => 'text',
+												'size' => 50,
+											),
+											'href_data' => array(
+												'label' => T_('Data tag'),
+												'note' => T_('Data Example: data-toggle="modal" '),
+												'defaultvalue' => '',
 												'type' => 'text',
 												'size' => 50,
 											),
 											'href_class' => array(
 												'label' => T_('Class'),
-												'defaultvalue' => 'slide_link',
+												'defaultvalue' => '',
 												'type' => 'text',
+												'size' => 50,
 											),
 											'href_target' => array(
 												'label' => T_('Target'),
-												'defaultvalue' => '_blank',
+												'defaultvalue' => 'none',
 												'type' => 'select',
 												'options' => array(
+																'none' => T_('none'),
 																'_blank' => T_('New'),
 																'_self' => T_('Self'),
 																'_parent' => T_('Parent'),
-																'_top' => T_('Top'))),
+																'_top' => T_('Top')),
+											),
 											
 			
 			
@@ -1522,6 +1594,11 @@ class slickcarousel_plugin extends Plugin
 		$custom_css .= "\t".'display: block;'."\n";
 		$custom_css .= '}'."\n\n";
 		
+		$custom_css .= '#slick_'.$this->classname.'_'.$wi_ID.' {'."\n";
+		$custom_css .= 'overflow:visible!important'."\n";
+		$custom_css .= '}'."\n";
+
+		
 		// Smart Phones
 		$custom_css .= '@media (max-width:768px) {'."\n";
 		if( $value = $params[ 'xs_slide_space' ] )
@@ -1583,6 +1660,7 @@ class slickcarousel_plugin extends Plugin
 		$custom_js .= '"use strict";'."\n";
 		
 		$custom_js .= '$("#slick_'.$this->classname.'_'.$wi_ID.'").slick({'."\n";
+		$custom_js .= ( $params['lazyload'] != false ) ? 'lazyLoad:\''.$params['lazyload'].'\','."\n":'';
 		$custom_js .= ( $params['shuffle'] == 0 ) ? 'shuffle: false,'."\n":'shuffle: true,'."\n";
 		$custom_js .= ( $params['shuffleFirst'] == 0 ) ? 'shuffleFirst: false,'."\n":'shuffleFirst: true,'."\n";
 		$custom_js .= ( $params['md_dots'] == 0 ) ? 'dots: false,'."\n":'dots: true,'."\n";
@@ -1595,6 +1673,7 @@ class slickcarousel_plugin extends Plugin
 		$custom_js .= ( $params['md_rtl'] == 0 ) ? 'rtl: false,'."\n":'rtl: true,'."\n";
 		
 		$custom_js .= 'speed:'.$params['md_speed'].','."\n";
+		
 		
 		$custom_js .= 'centerPadding: \'40px\','."\n";
 		
@@ -1710,7 +1789,7 @@ class slickcarousel_plugin extends Plugin
 				'before_item_no_image' 					=> 		'<div class="center-item" $style$><!-- no image START -->'."\n".'<p class="text-center">',
 				'after_item_no_image'   				=> 		'</p>'."\n".'</div><!-- no image END -->',
 								
-				'before_item_image' 					=> 		"\n".'<a href="$href$" class="$class$" title="$title$" target="$target$"><!-- link START -->'."\n",
+				'before_item_image' 					=> 		"\n".'<a href="$href$" class="$class$" title="$title$" $target$ $data$ $style$><!-- link START -->'."\n",
 				'after_item_image'   					=> 		"\n".'</a><!-- link END -->'."\n",
 			
 				'class'          						=> 		'center-item',
@@ -1773,17 +1852,50 @@ class slickcarousel_plugin extends Plugin
 				
 				if( ! empty( $image_attrs ) )
 				{
+					$style = 'style="z-index:999999;cursor:pointer;"';
+					
+					$params['before_item_image'] = preg_replace('~\$style\$~', $style, $params['before_item_image']);;
 					
 					$params['before_image'] = $params['before_item_image'];
 
 					$params['after_image'] = $params['after_item_image'];
 					
-					
 					if( is_array( $image_attrs ) )
 					{
+						$params['global_href_target'] = ($params['global_href_target'] != 'none') ? 'target="'.$params['global_href_target'].'"':'';
+						$set['href_target'] = ($set['href_target'] != 'none') ? 'target="'.$set['href_target'].'"':'';
 						
-						$r .= preg_replace( array('~\$href\$~', '~\$class\$~', '~\$title\$~', '~\$target\$~'), array( $set['href_src'], $set['href_class'], $set['href_title'], $set['href_target'] ), $params['before_image']);
-						$r .=  '<img'.get_field_attribs_as_string( $image_attrs ).' />';
+						
+						// Override with globals if individual item fields are left blank.
+						
+						$set['href_src'] = ( $set['ignore_globals'] !=1 && empty($set['href_src']) ) ? $params['global_href_src']:'';
+						$set['href_class'] = ( $set['ignore_globals'] !=1 && empty($set['href_class']) ) ? $params['global_href_class']:'';
+						$set['href_title'] = ( $set['ignore_globals'] !=1 && empty($set['href_title']) ) ? $params['global_href_title']:'';
+						$set['href_target'] = ( $set['ignore_globals'] !=1 && empty($set['href_target']) ) ? '':'';
+						$set['href_data'] = ( $set['ignore_globals'] !=1 && empty($set['href_data']) ) ? $params['global_href_data']:'';
+						
+						$r .= preg_replace( array('~\$href\$~', '~\$class\$~', '~\$title\$~', '~\$target\$~', '~\$data\$~'), array( $set['href_src'], $set['href_class'], $set['href_title'], $set['href_target'],$set['href_data'] ), $params['before_image']);
+						$img = '<img'.get_field_attribs_as_string( $image_attrs ).' />';
+						
+						
+						/*
+						*
+						*	ac> todo: create option to use elements (background) for images instead of images
+						*/
+						
+						
+						
+						// To use lazy loading, set a data-lazy attribute
+						// on your img tags and leave off the src
+						
+						if( $params['lazyload'] != false )
+						{
+							
+							$img = str_replace('src=', 'data-lazy=', $img );
+						}
+						
+						$r .= $img;
+						
 						$r .= $params['after_image' ];
 						
 					}
